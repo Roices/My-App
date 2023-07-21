@@ -30,3 +30,9 @@ extension AppColor {
         case mainPressed = "202B40"
     }
 }
+
+extension AppColor {
+    enum Primary: String {
+        case main = "FF8036"
+    }
+}

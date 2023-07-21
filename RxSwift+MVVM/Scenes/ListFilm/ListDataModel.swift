@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - MovieDB
 struct MovieDB: Codable {
-    let results: [Result]
+    let results: [ResultFilm]
 
     enum CodingKeys: String, CodingKey {
         case results
@@ -17,7 +17,7 @@ struct MovieDB: Codable {
 }
 
 // MARK: - Result
-struct Result: Codable {
+struct ResultFilm: Codable {
     let adult: Bool
     let backdropPath: String
     let genreIDS: [Int]

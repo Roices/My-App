@@ -24,13 +24,12 @@ final class ListDataViewModel {
         return self.error.asObserver()
     }
     
-    var result: Observable<[Result]>
-    let selectedFilm = BehaviorRelay<Result?>(value: nil)
+    var result: Observable<[ResultFilm]>
+    let selectedFilm = BehaviorRelay<ResultFilm?>(value: nil)
 
     init(title: String){
         self.navigationBarTitle = Observable.just(title)
         self.isLoading = Observable.just(false)
-//        loadmoreData()
         self.result = APIService.fetchData(1)
         
         _ = self.searchTrigger.subscribe(onNext: { data in
@@ -44,14 +43,14 @@ final class ListDataViewModel {
         })
     }
     
-    func loadmoreData() {
-         _ = APIService.fetchData(self.page).subscribe(onNext: { [weak self] result in
-            guard let self = self else { return }
-//            self.result.append(contentsOf: result)
-        }, onError: { [weak self] error in
-            self?.error.onNext(error)
-        })
-    }
+//    func loadmoreData() {
+//         _ = APIService.fetchData(self.page).subscribe(onNext: { [weak self] result in
+//          //  guard let self = self else { return }
+////            self.result.append(contentsOf: result)
+//        }, onError: { [weak self] error in
+//            self?.error.onNext(error)
+//        })
+//    }
 }
 
 enum APIError: Error {
@@ -60,7 +59,7 @@ enum APIError: Error {
 
 class APIService {
 
-    static func fetchData(_ page: Int) -> Observable<[Result]> {
+    static func fetchData(_ page: Int) -> Observable<[ResultFilm]> {
         // Gọi API và trả về dữ liệu dưới dạng Observable
         // Ví dụ:
         return Observable.create { observable in

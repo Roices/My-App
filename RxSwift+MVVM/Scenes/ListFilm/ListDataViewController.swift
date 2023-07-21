@@ -15,25 +15,24 @@ class ListDataViewController: UIViewController {
     @IBOutlet private weak var navBarView: NavBarHome!
     @IBOutlet private weak var nowInCinemasTitle: UILabel!
     @IBOutlet private weak var collectionViewFilm: UICollectionView!
+    @IBOutlet private weak var searchView: UIView!
+    @IBOutlet private weak var textFieldSearch: UITextField!
+    @IBOutlet private weak var buttonSearch: UIButton!
     
+    // MARK: - Properties
     let viewModel: ListDataViewModel = ListDataViewModel(title: "RxTest")
-    let activity: UIActivityIndicatorView = {
-       let indicatorView = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0,
-                                                                 width: UIScreen.main.bounds.width,
-                                                                 height: UIScreen.main.bounds.height))
-        indicatorView.stopAnimating()
-         return indicatorView
-    }()
-
     private let disposeBag = DisposeBag()
     
+    // MARK: - Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
         bindViewModel()
-        self.view.addSubview(activity)
+        setupRxTap()
         // Do any additional setup after loading the view.
     }
     
+    // MARK: - Functions
     func bindViewModel() {
         viewModel.navigationBarTitle
             .bind(to: navigationItem.rx.title)
@@ -51,6 +50,9 @@ class ListDataViewController: UIViewController {
                 self?.showAlert(err.localizedDescription)
             }).disposed(by: disposeBag)
         
+        viewModel.result.bind(to: collectionViewFilm.rx.items(cellIdentifier: "FilmCell")) { [weak self] index, model, cell in
+            let cell = collectionViewFilm.dequeueReusableCell(withReuseIdentifier: <#T##String#>, for: <#T##IndexPath#>)
+        }
 //        let _ = searchButton.rx.tap.subscribe { [weak self] _ in
 //            guard let searchData = self?.textfieldSearch.text else { return }
 //            self?.viewModel.searchTrigger.onNext(searchData)
@@ -82,7 +84,45 @@ class ListDataViewController: UIViewController {
 //        return contentOffset.y > offsetThreshold
 //    }
     
+    private func setupView() {
+        self.navigationController?.isNavigationBarHidden = true
+        self.view.backgroundColor = UIColor(hexString: AppColor.Surface.main.rawValue)
+        self.nowInCinemasTitle.text = "Now in cinemas"
+        self.nowInCinemasTitle.textColor = UIColor(hexString: AppColor.TextColor.main.rawValue)
+        self.textFieldSearch.isHidden = true
+        self.textFieldSearch.textColor = UIColor(hexString: AppColor.TextColor.main.rawValue)
+        self.hideKeyboardWhenTappedAround()
+        self.setupForKeyboard()
+        self.collectionViewFilm.register(FilmCell.self, forCellWithReuseIdentifier: "FilmCell")
+    }
     
+    private func setupRxTap() {
+        self.buttonSearch.rx.tap.bind { [weak self] in
+            self?.handleSearchButtonTapp()
+        }.disposed(by: disposeBag)
+    }
+    
+    // MARK: - Action
+    private func handleSearchButtonTapp() {
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            self?.buttonSearch.isHidden = true
+            self?.nowInCinemasTitle.isHidden = true
+            self?.textFieldSearch.isHidden = false
+            self?.textFieldSearch.placeholder = "Now in cinemas"
+            self?.textFieldSearch.becomeFirstResponder()
+        })
+    }
+    
+    @objc override func keyboardWillDisappear() {
+        //Do something here
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            self?.buttonSearch.isHidden = false
+            self?.nowInCinemasTitle.isHidden = false
+            self?.textFieldSearch.isHidden = true
+        })
+    }
+    
+    //
     func showAlert(_ mess: String) {
         let alert = UIAlertController(title: "Alert", message: mess, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Click", style: .default, handler: nil))

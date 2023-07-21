@@ -62,4 +62,10 @@ extension UIView {
             self.frame.size.width = newValue
         }
     }
+    
+    func setRadius(_ radius: CGFloat) {
+        self.layer.cornerRadius = radius
+    }
+
+    
 }
