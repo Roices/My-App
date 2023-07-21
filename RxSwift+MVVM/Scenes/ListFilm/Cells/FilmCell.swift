@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class FilmCell: UITableViewCell {
+final class FilmCell: UICollectionViewCell {
     
     @IBOutlet private weak var filmBanner: UIImageView!
     @IBOutlet private weak var mainTitleFilm: UILabel!
@@ -19,12 +19,6 @@ final class FilmCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         setupView()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     private func setupView() {

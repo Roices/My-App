@@ -51,8 +51,11 @@ class ListDataViewController: UIViewController {
             }).disposed(by: disposeBag)
         
         viewModel.result.bind(to: collectionViewFilm.rx.items(cellIdentifier: "FilmCell")) { [weak self] index, model, cell in
-            let cell = collectionViewFilm.dequeueReusableCell(withReuseIdentifier: <#T##String#>, for: <#T##IndexPath#>)
-        }
+            let indexPath = IndexPath(row: index, section: 0)
+            let cell = self?.collectionViewFilm.dequeueReusableCell(withReuseIdentifier: "FilmCell", for: indexPath) as! FilmCell
+            cell.bindData(filmModel: model)
+            return
+        }.disposed(by: disposeBag)
 //        let _ = searchButton.rx.tap.subscribe { [weak self] _ in
 //            guard let searchData = self?.textfieldSearch.text else { return }
 //            self?.viewModel.searchTrigger.onNext(searchData)
