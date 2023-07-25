@@ -50,12 +50,27 @@ class ListDataViewController: UIViewController {
                 self?.showAlert(err.localizedDescription)
             }).disposed(by: disposeBag)
         
-        viewModel.result.bind(to: collectionViewFilm.rx.items(cellIdentifier: "FilmCell")) { [weak self] index, model, cell in
-            let indexPath = IndexPath(row: index, section: 0)
-            let cell = self?.collectionViewFilm.dequeueReusableCell(withReuseIdentifier: "FilmCell", for: indexPath) as! FilmCell
+        viewModel.result.bind(to: collectionViewFilm.rx.items(cellIdentifier: "FilmCell", cellType: FilmCell.self)) { index, model, cell in
             cell.bindData(filmModel: model)
             return
         }.disposed(by: disposeBag)
+        
+        let layout = Observable.just(UICollectionViewFlowLayout())
+                // Sử dụng toán tử map để cung cấp mô tả layout cho UICollectionView
+                layout
+                    .map { layout -> UICollectionViewLayout in
+                        layout.itemSize = CGSize(width: (self.collectionViewFilm.width-16*2)/2 , height: 278)
+                        layout.minimumInteritemSpacing = 16
+                        layout.minimumLineSpacing = 16
+                        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+                        return layout
+                    }
+                    .bind(to: collectionViewFilm.rx.collectionViewLayout)
+                    .disposed(by: disposeBag)
+        
+//        collectionViewFilm.rx.willDisplayCell.subscribe { (cell, indexPath) in
+//            self.handleCellWillDisplay(at: indexPath, cell: cell)
+//        }.disposed(by: disposeBag)
 //        let _ = searchButton.rx.tap.subscribe { [weak self] _ in
 //            guard let searchData = self?.textfieldSearch.text else { return }
 //            self?.viewModel.searchTrigger.onNext(searchData)
@@ -96,7 +111,7 @@ class ListDataViewController: UIViewController {
         self.textFieldSearch.textColor = UIColor(hexString: AppColor.TextColor.main.rawValue)
         self.hideKeyboardWhenTappedAround()
         self.setupForKeyboard()
-        self.collectionViewFilm.register(FilmCell.self, forCellWithReuseIdentifier: "FilmCell")
+        self.collectionViewFilm.register(UINib(nibName: "FilmCell", bundle: nil), forCellWithReuseIdentifier: "FilmCell")
     }
     
     private func setupRxTap() {
@@ -130,30 +145,5 @@ class ListDataViewController: UIViewController {
         let alert = UIAlertController(title: "Alert", message: mess, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Click", style: .default, handler: nil))
         self.present(alert, animated: true)
-    }
-}
-
-
-protocol StoryboardInstantiable: UIViewController {}
-
-extension StoryboardInstantiable {
-    static func instantiate() -> Self {
-        let storyboard = UIStoryboard(name: className, bundle: nil)
-        return storyboard.instantiateInitialViewController() as! Self
-    }
-
-    static func instantiateWithNavigationController() -> UINavigationController {
-        let storyboard = UIStoryboard(name: className, bundle: nil)
-        return storyboard.instantiateInitialViewController() as! UINavigationController
-    }
-}
-
-extension NSObject {
-    static var className: String {
-        return NSStringFromClass(self).components(separatedBy: ".").last!
-    }
-
-    var className: String {
-        return type(of: self).className
     }
 }

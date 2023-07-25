@@ -12,7 +12,6 @@
 		410B418E2A6787C200829114 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B418A2A6787C100829114 /* GradientButton.swift */; };
 		410B418F2A6787C200829114 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B418B2A6787C100829114 /* BaseView.swift */; };
 		410B41932A6788BE00829114 /* FilmCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B41912A6788BE00829114 /* FilmCell.swift */; };
-		410B41942A6788BE00829114 /* FilmCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 410B41922A6788BE00829114 /* FilmCell.xib */; };
 		410B41972A678C8D00829114 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B41962A678C8D00829114 /* AppColor.swift */; };
 		410B419A2A678D3000829114 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B41992A678D3000829114 /* UIColor+.swift */; };
 		410B419C2A678D5900829114 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410B419B2A678D5900829114 /* UIView+.swift */; };
@@ -20,7 +19,7 @@
 		41C15D602A6A43030058B075 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C15D5F2A6A43030058B075 /* UIImage+.swift */; };
 		41C15D622A6A43A70058B075 /* Number+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C15D612A6A43A70058B075 /* Number+.swift */; };
 		41C15D642A6A7D090058B075 /* UIViewcontroller+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C15D632A6A7D090058B075 /* UIViewcontroller+.swift */; };
-		41C15D682A6A92060058B075 /* FilmsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C15D662A6A92060058B075 /* FilmsCell.xib */; };
+		41C15D682A6A92060058B075 /* FilmCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C15D662A6A92060058B075 /* FilmCell.xib */; };
 		41D32A2C2A1E024E001D9E0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D32A2B2A1E024E001D9E0F /* AppDelegate.swift */; };
 		41D32A302A1E024E001D9E0F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D32A2F2A1E024E001D9E0F /* ViewController.swift */; };
 		41D32A332A1E024E001D9E0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41D32A312A1E024E001D9E0F /* Main.storyboard */; };
@@ -61,7 +60,6 @@
 		410B418A2A6787C100829114 /* GradientButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
 		410B418B2A6787C100829114 /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		410B41912A6788BE00829114 /* FilmCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmCell.swift; sourceTree = "<group>"; };
-		410B41922A6788BE00829114 /* FilmCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilmCell.xib; sourceTree = "<group>"; };
 		410B41962A678C8D00829114 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		410B41992A678D3000829114 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		410B419B2A678D5900829114 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
@@ -69,7 +67,7 @@
 		41C15D5F2A6A43030058B075 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		41C15D612A6A43A70058B075 /* Number+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+.swift"; sourceTree = "<group>"; };
 		41C15D632A6A7D090058B075 /* UIViewcontroller+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewcontroller+.swift"; sourceTree = "<group>"; };
-		41C15D662A6A92060058B075 /* FilmsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilmsCell.xib; sourceTree = "<group>"; };
+		41C15D662A6A92060058B075 /* FilmCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilmCell.xib; sourceTree = "<group>"; };
 		41D32A282A1E024E001D9E0F /* RxSwift+MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RxSwift+MVVM.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41D32A2B2A1E024E001D9E0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41D32A2F2A1E024E001D9E0F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -172,8 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				410B41912A6788BE00829114 /* FilmCell.swift */,
-				410B41922A6788BE00829114 /* FilmCell.xib */,
-				41C15D662A6A92060058B075 /* FilmsCell.xib */,
+				41C15D662A6A92060058B075 /* FilmCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -416,12 +413,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				41D32A382A1E0251001D9E0F /* LaunchScreen.storyboard in Resources */,
-				410B41942A6788BE00829114 /* FilmCell.xib in Resources */,
 				41D32A352A1E0251001D9E0F /* Assets.xcassets in Resources */,
 				41D32A332A1E024E001D9E0F /* Main.storyboard in Resources */,
 				41C15D5E2A6A24B20058B075 /* Home.xcassets in Resources */,
 				41D32A5D2A1E046D001D9E0F /* ListData.xib in Resources */,
-				41C15D682A6A92060058B075 /* FilmsCell.xib in Resources */,
+				41C15D682A6A92060058B075 /* FilmCell.xib in Resources */,
 				410B418C2A6787C200829114 /* NavBarHome.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
