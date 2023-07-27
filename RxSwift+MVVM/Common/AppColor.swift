@@ -34,5 +34,6 @@ extension AppColor {
 extension AppColor {
     enum Primary: String {
         case main = "FF8036"
+        case glass = "1F293D"
     }
 }

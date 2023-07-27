@@ -41,6 +41,11 @@ final class FilmCell: UICollectionViewCell {
     }
     
     public func bindData(filmModel: ResultFilm) {
+        if filmModel.voteAverage > 7.0 {
+            viewRate.backgroundColor = UIColor(hexString: AppColor.Primary.main.rawValue)
+        } else {
+            viewRate.backgroundColor = UIColor(hexString: AppColor.Primary.glass.rawValue)
+        }
         lableRate.text = (filmModel.voteAverage).toString()
         let urlBanner = String(format: "https://image.tmdb.org/t/p/original%@", filmModel.posterPath)
         filmBanner.setImage(with: URL(string: urlBanner))

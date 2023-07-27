@@ -18,38 +18,58 @@ final class ListDataViewModel {
     private var page: Int = 1
     
     let navigationBarTitle: Observable<String>
-    let isLoading: Observable<Bool>
+    var isLoading = false
     
-    var errMessage: Observable<Error> {
-        return self.error.asObserver()
-    }
-    
+    var resultLoadMore = BehaviorRelay<[ResultFilm]>(value: [])
     var result: Observable<[ResultFilm]>
+    var resultSearch: Observable<[ResultFilm]>
+    var isHasLoadPage0 = false
     let selectedFilm = BehaviorRelay<ResultFilm?>(value: nil)
-
+    let disposeBag = DisposeBag()
+    
     init(title: String){
         self.navigationBarTitle = Observable.just(title)
-        self.isLoading = Observable.just(false)
-        self.result = APIService.fetchData(1)
+        self.result = self.resultLoadMore.asObservable()
+        self.resultSearch = self.result
         
         _ = self.searchTrigger.subscribe(onNext: { data in
             print(data)
         })
         
-        _ = self.loadmore.subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return }
-            self.page  += 1
-            self.result = APIService.fetchData(page)
+        self.loadmoreData()
+        
+        _ = self.loadmore
+            .filter { !self.isLoading }
+            .subscribe(onNext: { _ in
+            self.loadmoreData()
+        }).disposed(by: disposeBag)
+        
+        searchTrigger.subscribe { textSearch in
+            print(textSearch)
+        }.disposed(by: disposeBag)
+    }
+    
+    func loadmoreData() {
+        _ = APIService.fetchData(page).subscribe(onNext: { [weak self] loadmoreData in
+            if self?.page == 1 && !(self?.isHasLoadPage0 ?? true) {
+                self?.resultLoadMore.accept(loadmoreData)
+                self?.isHasLoadPage0 = true
+            } else {
+                var currentItems = self?.resultLoadMore.value ?? []
+                currentItems.append(contentsOf: loadmoreData)
+                self?.resultLoadMore.accept(currentItems)
+            }
+            self?.isLoading = false
+            self?.page += 1
+        }, onError: { [weak self] error in
+            self?.error.onNext(error)
         })
     }
     
-//    func loadmoreData() {
-//         _ = APIService.fetchData(self.page).subscribe(onNext: { [weak self] result in
-//          //  guard let self = self else { return }
-////            self.result.append(contentsOf: result)
-//        }, onError: { [weak self] error in
-//            self?.error.onNext(error)
-//        })
+//    func searchFilterData(with keyword: String) -> Observable<[ResultFilm]> {
+//        return Observable.create { [weak self] observable in
+//
+//        }
 //    }
 }
 

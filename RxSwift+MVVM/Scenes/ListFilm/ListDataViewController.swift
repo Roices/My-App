@@ -38,17 +38,10 @@ class ListDataViewController: UIViewController {
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
         
-//        viewModel.result
-//            .bind(to: tableDataRx.rx.items) { tableView, row, dataRes in
-//                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "subtitle")
-//                cell.textLabel?.text = dataRes.title
-//                return cell
-//            }.disposed(by: disposeBag)
-        
-        viewModel.errMessage.observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] err in
-                self?.showAlert(err.localizedDescription)
-            }).disposed(by: disposeBag)
+//        viewModel.errMessage.observe(on: MainScheduler.instance)
+//            .subscribe(onNext: { [weak self] err in
+//                self?.showAlert(err.localizedDescription)
+//            }).disposed(by: disposeBag)
         
         viewModel.result.bind(to: collectionViewFilm.rx.items(cellIdentifier: "FilmCell", cellType: FilmCell.self)) { index, model, cell in
             cell.bindData(filmModel: model)
@@ -59,7 +52,7 @@ class ListDataViewController: UIViewController {
                 // Sử dụng toán tử map để cung cấp mô tả layout cho UICollectionView
                 layout
                     .map { layout -> UICollectionViewLayout in
-                        layout.itemSize = CGSize(width: (self.collectionViewFilm.width-16*2)/2 , height: 278)
+                        layout.itemSize = CGSize(width: (self.collectionViewFilm.width-16)/2 , height: 278)
                         layout.minimumInteritemSpacing = 16
                         layout.minimumLineSpacing = 16
                         layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -68,39 +61,26 @@ class ListDataViewController: UIViewController {
                     .bind(to: collectionViewFilm.rx.collectionViewLayout)
                     .disposed(by: disposeBag)
         
-//        collectionViewFilm.rx.willDisplayCell.subscribe { (cell, indexPath) in
-//            self.handleCellWillDisplay(at: indexPath, cell: cell)
-//        }.disposed(by: disposeBag)
-//        let _ = searchButton.rx.tap.subscribe { [weak self] _ in
-//            guard let searchData = self?.textfieldSearch.text else { return }
-//            self?.viewModel.searchTrigger.onNext(searchData)
-//        }
-//
-//        tableDataRx.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
-//        }).disposed(by: disposeBag)
-//
-//        tableDataRx.rx.contentOffset
-//            .skip(1) // Bỏ qua sự kiện offset đầu tiên khi view load
-//            .map { [weak self] contentOffset in
-//                return self?.shouldLoadMoreData(contentOffset) ?? false
-//            }
-//            .distinctUntilChanged()
-//            .filter { $0 }
-//            .subscribe(onNext: { [weak self] _ in
-//                self?.viewModel.loadmore.onNext(())
-//            })
-//            .disposed(by: disposeBag)
-//
-        
+        collectionViewFilm.rx.contentOffset
+            .skip(1) // Bỏ qua sự kiện offset đầu tiên khi view load
+            .map { [weak self] contentOffset in
+                return self?.shouldLoadMoreData(contentOffset) ?? false
+            }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .subscribe(onNext: { [weak self] _ in
+                self?.viewModel.loadmore.onNext(())
+            })
+            .disposed(by: disposeBag)
     }
     
-//    private func shouldLoadMoreData(_ contentOffset: CGPoint) -> Bool {
-//        let tableViewHeight = tableDataRx.frame.height
-//        let contentHeight = tableDataRx.contentSize.height
-//        let offsetThreshold = contentHeight - tableViewHeight
-//
-//        return contentOffset.y > offsetThreshold
-//    }
+    private func shouldLoadMoreData(_ contentOffset: CGPoint) -> Bool {
+        let tableViewHeight = collectionViewFilm.frame.height
+        let contentHeight = collectionViewFilm.contentSize.height
+        let offsetThreshold = contentHeight - tableViewHeight
+
+        return contentOffset.y > offsetThreshold
+    }
     
     private func setupView() {
         self.navigationController?.isNavigationBarHidden = true
@@ -118,6 +98,14 @@ class ListDataViewController: UIViewController {
         self.buttonSearch.rx.tap.bind { [weak self] in
             self?.handleSearchButtonTapp()
         }.disposed(by: disposeBag)
+
+        self.textFieldSearch.rx.text
+            .orEmpty
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance) // Chờ 300ms sau khi người dùng nhập để tránh việc search quá nhanh và gây tốn tài nguyên
+            .distinctUntilChanged()
+            .bind(to: viewModel.searchTrigger)
+            .disposed(by: disposeBag)
+
     }
     
     // MARK: - Action
